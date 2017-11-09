@@ -31,7 +31,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { 
-            //alert("hurrah");
             var socket = io.connect(); 
             
             var username;
@@ -49,11 +48,12 @@
             $chat.hide();
             $messageForm.hide();
             
+            $("#num_users-area").text("Users currently logged in: " + num_logged_in_users);
+            
             $messageForm.submit(function(e) {
                 e.preventDefault(); 
                 socket.emit('send message', $message.val()); 
                 $message.val(''); 
-                $("#chat-area").scrollTop($("#chat-area")[0].scrollHeight);
             }); 
             
             $userForm.submit(function(e) {
@@ -70,8 +70,8 @@
             });
             
             socket.on('new message', function(data) {
-              console.log("here!!!!"); 
               $chat.append('<div><b>' + data.username + ': </b>' + data.msg + '</div>'); 
+              $("#chat-area").scrollTop($("#chat-area")[0].scrollHeight);
             });
             
             socket.on('new user', function(data) {
