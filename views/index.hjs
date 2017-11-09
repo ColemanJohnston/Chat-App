@@ -7,21 +7,24 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <h1>Chat</h1>
+    <h1 id="Title" class="center">Chat</h1>
     
     <div id="chat-area"></div>
-    <form id="messageForm">
+    <form id="messageForm" class="bottomOfPage center">
       <label>Enter Message</label>
+      <div></div>
       <textarea id="message"></textarea>
       <br>
       <input type="submit" value="Send Message">
     </form>
-    <form id="userForm">
-      <label>Enter Username</label>
-      <textarea id="username"></textarea>
-      <br>
-      <input type="submit" value="Set Username">
-    </form>
+    <div id="login-area" class="center">
+      <form id="userForm">
+        <label>Enter Username: </label>
+        <input type="text" id="username" cols"=10" rows="1" class="noresize"></textarea>
+        <br>
+        <input type="submit" value="Set Username">
+      </form>
+    </div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { 
@@ -34,13 +37,18 @@
             var $message = $("#message"); 
             var $chat = $("#chat-area"); 
             
+            var $loginArea = $("#login-area");
             var $userForm = $("#userForm");
             var $username = $("#username");
+            
+            $chat.hide();
+            $messageForm.hide();
             
             $messageForm.submit(function(e) {
                 e.preventDefault(); 
                 socket.emit('send message', $message.val()); 
                 $message.val(''); 
+                $chat.scrollTo(100,document.body.scrollHeight);
             }); 
             
             $userForm.submit(function(e) {
@@ -48,6 +56,12 @@
                 username = $username.val().trim();
                 $username.val('');
                 socket.emit('add user', username);
+                if (username) {
+                  $loginArea.fadeOut();
+                  $messageForm.show();
+                  $chat.show();
+                  $loginArea.off('click');
+                }
             });
             
             socket.on('new message', function(data) {
