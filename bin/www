@@ -26,11 +26,21 @@ var connections = [];
 
 io.sockets.on('connection', function(socket) {
   var addedUser = false;
-  connections.push(socket); 
+  connections.push(socket);
+  for(var i in connections){
+    var gSocket = connections[i];
+    //console.log(gSocket.username);
+    if(gSocket.username != undefined){
+      io.to(socket.id).emit('new user', {username: gSocket.username});
+    }
+  }
   console.log('Connected: %s sockets connected', connections.length); 
   
   socket.on("disconnect", function(data) {
-     connections.splice(connections.indexOf(socket), 1); 
+     connections.splice(connections.indexOf(socket), 1);
+     if(socket.username != undefined){
+       io.sockets.emit('user left',{username:socket.username});
+     }
      console.log('Disconnected: %s sockets connected', connections.length);
   });
   
@@ -42,10 +52,12 @@ io.sockets.on('connection', function(socket) {
   socket.on('add user', function(username) {
     console.log(username);
      if (addedUser) return;
-
+    
     // we store the username in the socket session for this client
     socket.username = username;
     addedUser = true;
+    
+    io.sockets.emit('new user',{username: username})
   });
   
 });

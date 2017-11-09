@@ -22,7 +22,8 @@
       <br>
       <input type="submit" value="Set Username">
     </form>
-    
+    <div>Logged in Users:</div>
+    <div id="user-area"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { 
             //alert("hurrah");
@@ -33,6 +34,7 @@
             var $messageForm = $("#messageForm"); 
             var $message = $("#message"); 
             var $chat = $("#chat-area"); 
+            var $users = $("#user-area");
             
             var $userForm = $("#userForm");
             var $username = $("#username");
@@ -53,7 +55,15 @@
             socket.on('new message', function(data) {
               console.log("here!!!!"); 
               $chat.append('<div>' + data.username + ': ' + data.msg + '</div>'); 
-            }); 
+            });
+            
+            socket.on('new user', function(data) {
+              $users.append('<div id=' + data.username + '>' + data.username + '</div>');
+            });
+            
+            socket.on('user left', function(data){
+              $("#" + data.username).remove();
+            });
             
         }); 
     </script>
