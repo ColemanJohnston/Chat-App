@@ -12,6 +12,6 @@
 ### 
 ### All we did to handle the interfaces between each other's code was to make sure we message the group when we pushed up new code
 ###
-### There isn't any known problems as of now for the program, except that it looks terrible
+### Users with the same username get deleted from the list when one leaves of them leaves, and it looks terrible
 ###
 ### If there were more time, we would add more css/eye candy so that the page does not look bad 
