@@ -25,6 +25,7 @@
         <input type="submit" value="Set Username">
       </form>
     </div>
+    <div id="num_users-area"></div>
     <div>Logged in Users:</div>
     <div id="user-area"></div>
 
@@ -34,6 +35,7 @@
             var socket = io.connect(); 
             
             var username;
+            var num_logged_in_users = 0;
             
             var $messageForm = $("#messageForm"); 
             var $message = $("#message"); 
@@ -74,10 +76,14 @@
             
             socket.on('new user', function(data) {
               $users.append('<div id=' + data.username + '>' + data.username + '</div>');
+              num_logged_in_users++;
+              $("#num_users-area").text("Users currently logged in: " + num_logged_in_users);
             });
             
             socket.on('user left', function(data){
               $("#" + data.username).remove();
+              num_logged_in_users--;
+              $("#num_users-area").text("Users currently logged in: " + num_logged_in_users);
             });
             
         }); 
