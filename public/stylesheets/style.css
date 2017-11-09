@@ -19,9 +19,11 @@ a {
   left:0;
   overflow-y:scroll;
   white-space:initial;
-  background-image:url("http://www.qygjxz.com/data/out/207/5259688-sky.jpg");
+  background-image:url("sky.jpg");
+  background-size: 100% 100%;
   background-attachment:fixed;
   background-repeat:no-repeat;
+  background-position:center;
 }
 
 .bottomOfPage {

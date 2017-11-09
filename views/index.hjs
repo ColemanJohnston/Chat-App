@@ -51,7 +51,7 @@
                 e.preventDefault(); 
                 socket.emit('send message', $message.val()); 
                 $message.val(''); 
-                $chat.scrollTo(100,document.body.scrollHeight);
+                $("#chat-area").scrollTop($("#chat-area")[0].scrollHeight);
             }); 
             
             $userForm.submit(function(e) {
