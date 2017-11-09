@@ -45,25 +45,10 @@
             
             $userForm.submit(function(e) {
                 e.preventDefault();
-                username = cleanInput($username.val().trim());
+                username = $username.val().trim();
                 $username.val('');
                 socket.emit('add user', username);
             });
-            
-            function setUsername () {
-              username = cleanInput($username.val().trim());
-          
-              // If the username is valid
-              if (username) {
-                console.log($username);
-                $userForm.fadeOut();
-                $messageForm.show();
-                $userForm.off('click');
-
-              // Tell the server your username
-              socket.emit('add user', username);
-              }
-            }
             
             socket.on('new message', function(data) {
               console.log("here!!!!"); 
