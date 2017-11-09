@@ -16,15 +16,26 @@
       <br>
       <input type="submit" value="Send Message">
     </form>
+    <form id="userForm">
+      <label>Enter Username</label>
+      <textarea id="username"></textarea>
+      <br>
+      <input type="submit" value="Set Username">
+    </form>
     
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { 
             //alert("hurrah");
             var socket = io.connect(); 
             
+            var username;
+            
             var $messageForm = $("#messageForm"); 
             var $message = $("#message"); 
             var $chat = $("#chat-area"); 
+            
+            var $userForm = $("#userForm");
+            var $username = $("#username");
             
             $messageForm.submit(function(e) {
                 e.preventDefault(); 
@@ -32,9 +43,31 @@
                 $message.val(''); 
             }); 
             
+            $userForm.submit(function(e) {
+                e.preventDefault();
+                username = cleanInput($username.val().trim());
+                $username.val('');
+                socket.emit('add user', username);
+            });
+            
+            function setUsername () {
+              username = cleanInput($username.val().trim());
+          
+              // If the username is valid
+              if (username) {
+                console.log($username);
+                $userForm.fadeOut();
+                $messageForm.show();
+                $userForm.off('click');
+
+              // Tell the server your username
+              socket.emit('add user', username);
+              }
+            }
+            
             socket.on('new message', function(data) {
               console.log("here!!!!"); 
-              $chat.append('<div>' + data.msg + '</div>'); 
+              $chat.append('<div>' + data.username + ': ' + data.msg + '</div>'); 
             }); 
             
         }); 

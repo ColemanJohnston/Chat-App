@@ -25,6 +25,7 @@ var io = require('socket.io').listen(server);
 var connections = []; 
 
 io.sockets.on('connection', function(socket) {
+  var addedUser = false;
   connections.push(socket); 
   console.log('Connected: %s sockets connected', connections.length); 
   
@@ -35,9 +36,19 @@ io.sockets.on('connection', function(socket) {
   
   socket.on('send message', function(data) {
     console.log(data); 
-    io.sockets.emit('new message', {msg: data}); 
+    io.sockets.emit('new message', {username: socket.username, msg: data}); 
   })
-}); 
+  
+  socket.on('add user', function(username) {
+    console.log(username);
+     if (addedUser) return;
+
+    // we store the username in the socket session for this client
+    socket.username = username;
+    addedUser = true;
+  });
+  
+});
 
 /**
  * Listen on provided port, on all network interfaces.
