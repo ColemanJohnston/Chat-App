@@ -69,7 +69,7 @@
             
             socket.on('new message', function(data) {
               console.log("here!!!!"); 
-              $chat.append('<div>' + data.username + ': ' + data.msg + '</div>'); 
+              $chat.append('<div><b>' + data.username + ': </b>' + data.msg + '</div>'); 
             });
             
             socket.on('new user', function(data) {
